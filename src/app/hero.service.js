@@ -45,6 +45,20 @@ var HeroService = (function () {
             .then(function () { return hero; })
             .catch(this.handleError);
     };
+    HeroService.prototype.create = function (name) {
+        return this.http
+            .post(this.heroesurl, JSON.stringify({ name: name }), { headers: this.headers })
+            .toPromise()
+            .then(function (res) { return res.json().data; })
+            .catch(this.handleError);
+    };
+    HeroService.prototype.delete = function (id) {
+        var url = this.heroesurl + "/" + id;
+        return this.http.delete(url, { headers: this.headers })
+            .toPromise()
+            .then(function () { return null; })
+            .catch(this.handleError);
+    };
     HeroService.prototype.handleError = function (error) {
         console.log('An error occured', error);
         return Promise.reject(error.message || error);
